@@ -5,6 +5,7 @@ import doctorController from "../controllers/doctorController";
 import patientController from '../controllers/patientController';
 import specialtyController from '../controllers/spcialtyController';
 import clinicController from '../controllers/clinicController';
+import itemController  from '../controllers/itemController';
 
 let router = express.Router();
 
@@ -24,6 +25,13 @@ let initWebRoutes = (app) => {
     router.put('/api/edit-user', userController.handleEditUser);
     router.delete('/api/delete-user', userController.handleDeleteUser); //restAPI
     router.get('/api/allcode', userController.getAllCode);
+
+    router.get('/api/get-all-item', itemController.handleGetAllItem);
+    router.post('/api/create-new-item', itemController.handleCreateNewItem);
+    router.delete('/api/delete-item', itemController.handleDeleteItems);
+    router.get('/api/allcode-item', itemController.getAllCodeItems);
+
+    router.get('/api/get-items-caylan', itemController.getItemCayLan);
 
     router.get('/api/top-doctor-home', doctorController.getTopDoctorHome);
     router.get('/api/get-all-doctors', doctorController.getAllDoctors);

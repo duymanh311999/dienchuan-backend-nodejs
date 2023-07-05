@@ -49,6 +49,11 @@ let handleCreateNewUser = async (req, res) => {
     return res.status(200).json(message);
 }
 
+let handleCreateNewItem = async (req, res) => {
+    let message = await userService.createNewItem(req.body);
+    return res.status(200).json(message);
+}
+
 let handleDeleteUser = async (req, res) => {
     if (!req.body.id) {
         return res.status(200).json({
@@ -85,5 +90,8 @@ module.exports = {
     handleCreateNewUser: handleCreateNewUser,
     handleEditUser: handleEditUser,
     handleDeleteUser: handleDeleteUser,
-    getAllCode: getAllCode
+    getAllCode: getAllCode,
+
+
+    handleCreateNewItem:handleCreateNewItem
 }

@@ -141,6 +141,9 @@ let createNewUser = (data) => {
         }
     })
 }
+
+
+
 let deleteUser = (userId) => {
     return new Promise(async (resolve, reject) => {
         let foundUser = await db.User.findOne({
@@ -237,5 +240,7 @@ module.exports = {
     createNewUser: createNewUser,
     deleteUser: deleteUser,
     updateUserData: updateUserData,
-    getAllCodeService: getAllCodeService
+    getAllCodeService: getAllCodeService,
+
+
 }
