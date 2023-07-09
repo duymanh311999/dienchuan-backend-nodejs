@@ -26,12 +26,19 @@ let initWebRoutes = (app) => {
     router.delete('/api/delete-user', userController.handleDeleteUser); //restAPI
     router.get('/api/allcode', userController.getAllCode);
 
+    // dien chuan
+
     router.get('/api/get-all-item', itemController.handleGetAllItem);
     router.post('/api/create-new-item', itemController.handleCreateNewItem);
     router.delete('/api/delete-item', itemController.handleDeleteItems);
+    router.put('/api/edit-items', itemController.handleEditItems);
     router.get('/api/allcode-item', itemController.getAllCodeItems);
 
     router.get('/api/get-items-caylan', itemController.getItemCayLan);
+
+    router.get('/api/get-all-items-name', itemController.getAllItemsName);
+    router.post('/api/save-infor-items-name', itemController.postInforItemsName);
+
 
     router.get('/api/top-doctor-home', doctorController.getTopDoctorHome);
     router.get('/api/get-all-doctors', doctorController.getAllDoctors);

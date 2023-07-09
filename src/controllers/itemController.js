@@ -38,11 +38,6 @@ let handleDeleteItems = async (req, res) => {
     return res.status(200).json(message);
 }
 
-let handleEditUser = async (req, res) => {
-    let data = req.body;
-    let message = await itemService.updateUserData(data);
-    return res.status(200).json(message)
-}
 
 let getAllCode = async (req, res) => {
     try {
@@ -86,14 +81,50 @@ let getItemCayLan = async (req, res) => {
 
 }
 
-module.exports = {
-    handleEditUser: handleEditUser,
-    getAllCode: getAllCode,
 
+let getAllItemsName = async (req, res) => {
+    try {
+        let items = await itemService.getAllItemsName();
+        return res.status(200).json(items)
+    } catch (e) {
+        console.log(e)
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'Error from the server'
+        })
+    }
+}
+
+let postInforItemsName = async (req, res) => {
+    try {
+        let items = await itemService.postInforItemsName(req.body);
+        return res.status(200).json(items)
+    } catch (e) {
+        console.log(e)
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'Error from the server'
+        })
+    }
+}
+
+let handleEditItems = async (req, res) => {
+    let data = req.body;
+    let message = await itemService.updateItemsData(data);
+    return res.status(200).json(message)
+}
+
+
+
+module.exports = {
+    getAllCode: getAllCode,
 
     handleCreateNewItem:handleCreateNewItem,
     handleGetAllItem: handleGetAllItem,
     handleDeleteItems: handleDeleteItems,
     getAllCodeItems: getAllCodeItems,
     getItemCayLan: getItemCayLan,
+    getAllItemsName: getAllItemsName,
+    postInforItemsName: postInforItemsName,
+    handleEditItems: handleEditItems,
 }

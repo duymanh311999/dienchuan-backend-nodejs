@@ -62,7 +62,7 @@ let createNewItem = (data) => {
                     priceAfterSale: data.priceAfterSale,
                     descriptionHTML: data.descriptionHTML,
                     typeOf: data.typeOf,
-                    image: data.image,
+                    image: data.avatar,
                 })
 
                 resolve({
@@ -99,41 +99,40 @@ let deleteItems = (itemId) => {
     })
 }
 
-let updateUserData = (data) => {
+let updateItemsData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.id || !data.roleId || !data.positionId || !data.gender) {
+            if (!data.id || !data.typeOf) {
                 resolve({
                     errCode: 2,
                     errMessage: 'Missing required parameters'
                 })
             }
-            let user = await db.User.findOne({
+            let items = await db.Items.findOne({
                 where: { id: data.id },
                 raw: false
             })
-            if (user) {
-                user.firstName = data.firstName;
-                user.lastName = data.lastName;
-                user.address = data.address;
-                user.roleId = data.roleId;
-                user.positionId = data.positionId;
-                user.gender = data.gender;
-                user.phonenumber = data.phonenumber;
+            if (items) {
+                items.name = data.name;
+                items.quantity = data.quantity;
+                items.priceBeforeSale = data.priceBeforeSale;
+                items.priceAfterSale = data.priceAfterSale;
+                items.descriptionHTML = data.descriptionHTML;
+                items.typeOf = data.typeOf;
                 if (data.avatar) {
-                    user.image = data.avatar;
+                    items.image = data.avatar;
                 }
 
-                await user.save();
+                await items.save();
 
                 resolve({
                     errCode: 0,
-                    message: 'Update the user succeeds!'
+                    message: 'Update the item succeeds!'
                 })
             } else {
                 resolve({
                     errCode: 1,
-                    errMessage: `User's not found!`
+                    errMessage: `Item's not found!`
                 });
             }
         } catch (e) {
@@ -195,8 +194,52 @@ let getItemsHome = (limitInput) => {
         }
     })
 }
+
+let getAllItemsName = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let items = await db.Items.findAll({
+                attributes: ['id','name'],
+            })
+
+            resolve({
+                errCode: 0,
+                data: items
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+let postInforItemsName = (inputData) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!inputData.itemId || !inputData.contentHTML || !inputData.contentMarkdown) {
+            resolve({
+                errCode: 1,
+                errMessage: 'Missing required parameter!'
+            })
+        }else{
+            await db.Markdown.create({
+                contentHTML: inputData.contentHTML,
+                contentMarkdown: inputData.contentMarkdown,
+                itemId: inputData.itemId
+            })
+            resolve({
+                errCode: 0,
+                errMessage: 'Save items succeed!'
+            })
+        }
+      }catch(e){
+        reject(e)
+      }
+    })
+}
+
+
+
 module.exports = {
-    updateUserData: updateUserData,
     getAllCodeService: getAllCodeService,
 
 
@@ -204,4 +247,7 @@ module.exports = {
     getAllIems: getAllIems,
     deleteItems: deleteItems,
     getItemsHome: getItemsHome,
+    getAllItemsName: getAllItemsName,
+    postInforItemsName: postInforItemsName,
+    updateItemsData: updateItemsData,
 }
