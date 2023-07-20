@@ -35,9 +35,13 @@ let initWebRoutes = (app) => {
     router.get('/api/allcode-item', itemController.getAllCodeItems);
 
     router.get('/api/get-items-caylan', itemController.getItemCayLan);
+    router.get('/api/get-items-quedo', itemController.getItemQueDo);
+    router.get('/api/get-items-thietbi', itemController.getItemThietBi);
+    router.get('/api/get-items-sach', itemController.getItemSach);
 
     router.get('/api/get-all-items-name', itemController.getAllItemsName);
     router.post('/api/save-infor-items-name', itemController.postInforItemsName);
+    router.get('/api/get-detail-items-by-id', itemController.getDetailItemsById);
 
 
     router.get('/api/top-doctor-home', doctorController.getTopDoctorHome);

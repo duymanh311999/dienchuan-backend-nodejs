@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Items.belongsTo(models.Allcode, { foreignKey: 'typeOf', targetKey: 'keyMap', as: 'typeofData' })
-
+      Items.hasOne(models.Markdown, { foreignKey: 'itemId' })
     }
   };
   Items.init({

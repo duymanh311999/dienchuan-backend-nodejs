@@ -69,7 +69,7 @@ let getItemCayLan = async (req, res) => {
     let limit = req.query.limit;
     if (!limit) limit = 10;
     try {
-        let response = await itemService.getItemsHome(+limit);
+        let response = await itemService.getItemsHomeCayLan(+limit);
         return res.status(200).json(response);
     } catch (e) {
         console.log(e);
@@ -78,7 +78,51 @@ let getItemCayLan = async (req, res) => {
             message: 'Error from server...'
         })
     }
+}
 
+let getItemQueDo = async (req, res) => {
+    let limit = req.query.limit;
+    if (!limit) limit = 10;
+    try {
+        let response = await itemService.getItemsHomeQueDo(+limit);
+        return res.status(200).json(response);
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+            errCode: -1,
+            message: 'Error from server...'
+        })
+    }
+}
+
+let getItemThietBi = async (req, res) => {
+    let limit = req.query.limit;
+    if (!limit) limit = 10;
+    try {
+        let response = await itemService.getItemsHomeThietBi(+limit);
+        return res.status(200).json(response);
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+            errCode: -1,
+            message: 'Error from server...'
+        })
+    }
+}
+
+let getItemSach = async (req, res) => {
+    let limit = req.query.limit;
+    if (!limit) limit = 10;
+    try {
+        let response = await itemService.getItemsHomeSach(+limit);
+        return res.status(200).json(response);
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+            errCode: -1,
+            message: 'Error from server...'
+        })
+    }
 }
 
 
@@ -115,6 +159,22 @@ let handleEditItems = async (req, res) => {
 }
 
 
+let getDetailItemsById = async (req, res) => {
+    try {
+        let infor = await itemService.getDetailItemsById(req.query.id);
+        return res.status(200).json(
+            infor
+        )
+
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+            errCode: -1,
+            errMessage: 'Error from the server'
+        })
+    }
+}
+
 
 module.exports = {
     getAllCode: getAllCode,
@@ -124,7 +184,11 @@ module.exports = {
     handleDeleteItems: handleDeleteItems,
     getAllCodeItems: getAllCodeItems,
     getItemCayLan: getItemCayLan,
+    getItemQueDo: getItemQueDo,
+    getItemThietBi: getItemThietBi,
+    getItemSach: getItemSach,
     getAllItemsName: getAllItemsName,
     postInforItemsName: postInforItemsName,
     handleEditItems: handleEditItems,
+    getDetailItemsById: getDetailItemsById,
 }

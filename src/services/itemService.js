@@ -166,13 +166,100 @@ let getAllCodeService = (typeInput) => {
     })
 }
 
-let getItemsHome = (limitInput) => {
+let getItemsHomeCayLan = (limitInput) => {
     return new Promise(async (resolve, reject) => {
         try {
 
             let items = await db.Items.findAll({
                 limit: limitInput,
                 where: { typeOf: 'Cây lăn' },
+                order: [['createdAt', 'DESC']],
+                attributes: ['id','name', 'quantity', 'priceBeforeSale', 'priceAfterSale',
+                     'image', 'descriptionHTML', 'typeOf'],
+                // include: [
+                //     { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
+                //     { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] }
+                // ],
+                raw: true,
+                nest: true
+            })
+
+            resolve({
+                errCode: 0,
+                data: items
+            })
+
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let getItemsHomeQueDo = (limitInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            let items = await db.Items.findAll({
+                limit: limitInput,
+                where: { typeOf: 'Que dò' },
+                order: [['createdAt', 'DESC']],
+                attributes: ['id','name', 'quantity', 'priceBeforeSale', 'priceAfterSale',
+                     'image', 'descriptionHTML', 'typeOf'],
+                // include: [
+                //     { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
+                //     { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] }
+                // ],
+                raw: true,
+                nest: true
+            })
+
+            resolve({
+                errCode: 0,
+                data: items
+            })
+
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let getItemsHomeThietBi = (limitInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            let items = await db.Items.findAll({
+                limit: limitInput,
+                where: { typeOf: 'Thiết bị' },
+                order: [['createdAt', 'DESC']],
+                attributes: ['id','name', 'quantity', 'priceBeforeSale', 'priceAfterSale',
+                     'image', 'descriptionHTML', 'typeOf'],
+                // include: [
+                //     { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
+                //     { model: db.Allcode, as: 'genderData', attributes: ['valueEn', 'valueVi'] }
+                // ],
+                raw: true,
+                nest: true
+            })
+
+            resolve({
+                errCode: 0,
+                data: items
+            })
+
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let getItemsHomeSach = (limitInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            let items = await db.Items.findAll({
+                limit: limitInput,
+                where: { typeOf: 'Sách' },
                 order: [['createdAt', 'DESC']],
                 attributes: ['id','name', 'quantity', 'priceBeforeSale', 'priceAfterSale',
                      'image', 'descriptionHTML', 'typeOf'],
@@ -215,17 +302,32 @@ let getAllItemsName = () => {
 let postInforItemsName = (inputData) => {
     return new Promise(async (resolve, reject) => {
       try {
-        if (!inputData.itemId || !inputData.contentHTML || !inputData.contentMarkdown) {
+        if (!inputData.itemId || !inputData.contentHTML || !inputData.contentMarkdown || !inputData.action) {
             resolve({
                 errCode: 1,
                 errMessage: 'Missing required parameter!'
             })
         }else{
-            await db.Markdown.create({
-                contentHTML: inputData.contentHTML,
-                contentMarkdown: inputData.contentMarkdown,
-                itemId: inputData.itemId
-            })
+            if(inputData.action === 'CREATE'){
+                await db.Markdown.create({
+                    contentHTML: inputData.contentHTML,
+                    contentMarkdown: inputData.contentMarkdown,
+                    itemId: inputData.itemId
+                })
+            }else
+                if(inputData.action === 'EDIT'){
+                    let itemMarkdown = await db.Markdown.findOne({
+                        where : {itemId: inputData.itemId},
+                        raw: false
+                    })
+
+                    if(itemMarkdown){
+                        itemMarkdown.contentHTML = inputData.contentHTML;
+                        itemMarkdown.contentMarkdown = inputData.contentMarkdown;
+                        await itemMarkdown.save()
+                    }          
+            }
+           
             resolve({
                 errCode: 0,
                 errMessage: 'Save items succeed!'
@@ -234,6 +336,49 @@ let postInforItemsName = (inputData) => {
       }catch(e){
         reject(e)
       }
+    })
+}
+
+let getDetailItemsById = (inputId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!inputId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter!'
+                })
+            } else {
+
+                let data = await db.Items.findOne({
+                    where: {
+                        id: inputId
+                    },
+                    include: [
+                        {
+                            model: db.Markdown,
+                            attributes: ['description', 'contentHTML', 'contentMarkdown']
+                        },
+
+                        { model: db.Allcode, as: 'typeofData', attributes: ['valueEn', 'valueVi'] }
+                    ],
+                    raw: false,
+                    nest: true
+                })
+
+                if (data && data.image) {
+                    data.image = Buffer.from(data.image, 'base64').toString('binary');
+                }
+
+                if (!data) data = {};
+
+                resolve({
+                    errCode: 0,
+                    data: data
+                })
+            }
+        } catch (e) {
+            reject(e);
+        }
     })
 }
 
@@ -246,8 +391,13 @@ module.exports = {
     createNewItem:createNewItem,
     getAllIems: getAllIems,
     deleteItems: deleteItems,
-    getItemsHome: getItemsHome,
+    getItemsHomeCayLan: getItemsHomeCayLan,
+    getItemsHomeQueDo: getItemsHomeQueDo,
+    getItemsHomeThietBi: getItemsHomeThietBi,
+    getItemsHomeSach: getItemsHomeSach,
     getAllItemsName: getAllItemsName,
     postInforItemsName: postInforItemsName,
     updateItemsData: updateItemsData,
+    getDetailItemsById: getDetailItemsById,
+    
 }
