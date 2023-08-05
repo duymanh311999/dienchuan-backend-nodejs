@@ -17,7 +17,7 @@ module.exports = {
       priceBeforeSale: {
         type: Sequelize.STRING
       },
-      priceAfterSale: {
+      price: {
         type: Sequelize.STRING
       },
       image: {

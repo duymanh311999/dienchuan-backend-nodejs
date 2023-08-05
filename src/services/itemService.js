@@ -25,7 +25,7 @@ let getAllIems = (itemId) => {
             let items = '';
             if (itemId === 'ALL') {
                 items = await db.Items.findAll({   
-                    attributes: ['id','name', 'quantity', 'priceBeforeSale', 'priceAfterSale',
+                    attributes: ['id','name', 'quantity', 'priceBeforeSale', 'price',
                      'image', 'descriptionHTML', 'typeOf'],
                 })
             }
@@ -59,7 +59,7 @@ let createNewItem = (data) => {
                     name: data.name,
                     quantity: data.quantity,
                     priceBeforeSale: data.priceBeforeSale,
-                    priceAfterSale: data.priceAfterSale,
+                    price: data.price,
                     descriptionHTML: data.descriptionHTML,
                     typeOf: data.typeOf,
                     image: data.avatar,
@@ -116,7 +116,7 @@ let updateItemsData = (data) => {
                 items.name = data.name;
                 items.quantity = data.quantity;
                 items.priceBeforeSale = data.priceBeforeSale;
-                items.priceAfterSale = data.priceAfterSale;
+                items.price = data.price;
                 items.descriptionHTML = data.descriptionHTML;
                 items.typeOf = data.typeOf;
                 if (data.avatar) {
@@ -174,7 +174,7 @@ let getItemsHomeCayLan = (limitInput) => {
                 limit: limitInput,
                 where: { typeOf: 'Cây lăn' },
                 order: [['createdAt', 'DESC']],
-                attributes: ['id','name', 'quantity', 'priceBeforeSale', 'priceAfterSale',
+                attributes: ['id','name', 'quantity', 'priceBeforeSale', 'price',
                      'image', 'descriptionHTML', 'typeOf'],
                 // include: [
                 //     { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
@@ -203,7 +203,7 @@ let getItemsHomeQueDo = (limitInput) => {
                 limit: limitInput,
                 where: { typeOf: 'Que dò' },
                 order: [['createdAt', 'DESC']],
-                attributes: ['id','name', 'quantity', 'priceBeforeSale', 'priceAfterSale',
+                attributes: ['id','name', 'quantity', 'priceBeforeSale', 'price',
                      'image', 'descriptionHTML', 'typeOf'],
                 // include: [
                 //     { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
@@ -232,7 +232,7 @@ let getItemsHomeThietBi = (limitInput) => {
                 limit: limitInput,
                 where: { typeOf: 'Thiết bị' },
                 order: [['createdAt', 'DESC']],
-                attributes: ['id','name', 'quantity', 'priceBeforeSale', 'priceAfterSale',
+                attributes: ['id','name', 'quantity', 'priceBeforeSale', 'price',
                      'image', 'descriptionHTML', 'typeOf'],
                 // include: [
                 //     { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
@@ -261,7 +261,7 @@ let getItemsHomeSach = (limitInput) => {
                 limit: limitInput,
                 where: { typeOf: 'Sách' },
                 order: [['createdAt', 'DESC']],
-                attributes: ['id','name', 'quantity', 'priceBeforeSale', 'priceAfterSale',
+                attributes: ['id','name', 'quantity', 'priceBeforeSale', 'price',
                      'image', 'descriptionHTML', 'typeOf'],
                 // include: [
                 //     { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
